@@ -3,7 +3,7 @@ import java.awt.Graphics;
 import javax.swing.JComponent;
 
 
-public class PacmanView extends JComponent {
+/*public class PacmanView extends JComponent {
 	
 
 	
@@ -14,10 +14,11 @@ public class PacmanView extends JComponent {
 		private final Pacman game;
 		
 		private static final long serialVersionUID = 1L;
-
+		
 		public PacmanView(Pacman game) {
 			super();
 			this.game = game;
+			
 			// addMouseListener(new TicTacToeMouseListener(this));
 			setOpaque(true);
 			setSize(WIDTH, HEIGHT);
@@ -31,7 +32,6 @@ public class PacmanView extends JComponent {
 			int height = getSize().height;
 			g.setColor(Color.BLACK);
 			drawLines(g, width, height);
-			drawMoves(g);
 		}
 
 		private void drawLines(Graphics g, int width, int height) {
@@ -41,19 +41,6 @@ public class PacmanView extends JComponent {
 			g.drawLine(5,height-5,width-5,height-5);
 		}
 
-		private void drawMove(Graphics g, int posX, int posY) {
-			int x = getSize().width * posX / 3;
-			int xWidth = getSize().width / 3;
-			int y = getSize().height * posY / 3;
-			int yWidth = getSize().height / 3;
-			g.fillRect(x, y, xWidth, yWidth);
-			g.setColor(Color.BLACK);
-			g.drawRect(x, y, xWidth, yWidth);
-		}
-
-		private void drawMoves(Graphics g) {
-			// TODO
-		}
-
-	}
+		
+	}*/
 

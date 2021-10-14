@@ -7,7 +7,7 @@
 	
 	public class Pacman	extends JPanel{
 		
-		private int x ,y,velY,velX;
+		private int x ,y,velY,velX,score = 0;
 		private final int vel=50;
 		private  int map[][];
 		private char moves;
@@ -65,8 +65,8 @@
 		
 		  	g.setColor(Color.YELLOW);
 		  	
-		  	g.drawRect(x,y,50,50);
-		  	System.out.println(x + " " + y);
+		  	//g.drawRect(x,y,50,50);
+		  	System.out.println(x + " " + y+ " score : " + score);
 		  	g.fillRect(x, y, 50, 50);
 		  	
 		}
@@ -85,6 +85,7 @@
 				if(y<=50) {
 					t.stop();
 				}*/
+				checkPacGommes();
 				if(!checkCollisions()) {
 				x=x+ velX;
 				y= y+velY;
@@ -164,7 +165,17 @@
 			}
 			return false;
 		}
-		
+		public boolean checkPacGommes() {
+			//System.out.println(((x/vel)-1) + " " + ((y/vel)-1)+ " : " + map[(x/vel)-1][(y/vel)-1]);
+				if(map[(x/vel)-1][(y/vel)-1] == 2){
+					map[(x/vel)-1][(y/vel)-1] = 0;
+					score += 100;
+					
+					return true;
+				}
+			return false;
+		}
+	
 		
 	}
 	

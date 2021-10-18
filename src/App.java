@@ -22,7 +22,9 @@ public class App{
 		frame.setLocation(400,100);
 		//frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		frame.add(pacman);
+		
 		frame.setSize(d);
 		frame.setVisible(true);
 	}

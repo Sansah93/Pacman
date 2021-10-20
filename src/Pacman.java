@@ -15,6 +15,7 @@
 		private Color couleur = Color.YELLOW;
 		private  int life;
 		private boolean jauneP,orange;
+		int random=0,random2=0,random3=0,random4=0;
 		
 		
 		Ghost ghost1= new Ghost(true);
@@ -30,7 +31,7 @@
 			this.life=3;
 		
 		  //map=new int[12][12];            //coté gauche
-	       this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	       this.map= new int[][]{{1,1,1,1,1,1,1,6,1,1,1,1,1,1,1},
 	    	   					 {1,0,0,0,0,0,0,0,0,0,0,0,0,2,1},
 	    	   					 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	    	   					 {1,0,0,0,0,0,4,0,0,0,0,0,0,0,1},
@@ -44,7 +45,7 @@
 	    	   					 {1,0,0,0,0,0,2,0,0,0,0,0,0,0,1},
 	    	   					 {1,0,0,0,0,0,2,0,0,0,0,0,0,0,1},
 	    	   					 {1,2,0,0,0,0,2,0,0,0,0,5,0,0,1},	
-	    	   					 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+	    	   					 {1,1,1,1,1,1,1,6,1,1,1,1,1,1,1}
 				};							//coté droit
 				
 		ghost1.setPosX(200);
@@ -105,6 +106,7 @@
 						g.setColor(Color.BLACK);
 						
 					}
+					
 				}
 			}
 			if(ghost1.isAlive()) {
@@ -153,8 +155,11 @@
 				checkPacViolet();
 				checkPacOrange();
 				checkPacVert();
+				checkPortail();
+			
 				
 				if(!checkCollisions(x,y,moves)) {
+				
 				x=x+ velX;
 				y= y+velY;
 				repaint(); 
@@ -198,6 +203,7 @@
 			
 			}
 		}
+	
 		public boolean checkCollisions(int x,int y, char moves) {
 			//System.out.println(((x/vel)-1) + " " + ((y/vel)-1)+ " : " + map[(x/vel)-1][(y/vel)-1]);
 			switch(moves) {
@@ -285,6 +291,34 @@ public boolean checkPacOrange() {
 				}
 			return false;
 		}
+
+public void checkPortail() {
+	if( x==750) {
+		x=50;
+		
+		System.out.println("x "+x+" y "+y);
+	}
+	else if( x==50) {
+		x=750;
+		
+		System.out.println("x "+x+" y "+y);
+	}
+	
+}
+
+public void checkPortailG(Ghost ghost) {
+	if( ghost.getPosX()==750) {
+		ghost.setPosX(50);
+		
+		System.out.println("x "+x+" y "+y);
+	}
+	else if(ghost.getPosX()==50) {
+		ghost.setPosX(750);
+		
+		System.out.println("x "+x+" y "+y);
+	}
+	
+}
 		
 public boolean checkPacVert() {
 	
@@ -369,8 +403,8 @@ this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 					ghost2.setPosY(300);
 					rndmGhost(ghost2);
 
-					ghost3.setPosX(400);
-					ghost3.setPosY(400);
+					ghost3.setPosX(450);
+					ghost3.setPosY(450);
 					rndmGhost(ghost3);
 
 					ghost4.setPosX(500);
@@ -387,11 +421,37 @@ this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 			
 			 
 		}
+		/*public void checkGhostRandom(Ghost ghost,int random) {
+			
+			if(!checkCollisions(ghost.getPosX(),ghost.getPosY(),ghost.getMoves())) {
+				ghost.setPosX(ghost.getPosX()+ ghost.getVelX());
+				ghost.setPosY(ghost.getPosY()+ghost.getVelY()); 
+				
+				if(random == 10) {
+					rndmGhost(ghost);
+					random = 0;
+				}
+				random++;
+				repaint(); 
+				}else {
+					rndmGhost(ghost);
+				}
+		}*/
+		
 		
 		
 		ActionListener actionG = new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				checkGameOver();
+				checkPortailG(ghost1);
+				checkPortailG(ghost2);
+				checkPortailG(ghost3);
+				checkPortailG(ghost4);
+				/*checkGhostRandom( ghost1,random);
+				checkGhostRandom( ghost2,random2);
+				checkGhostRandom( ghost3,random3);
+				checkGhostRandom( ghost4,random4);*/
+				
 				if(!checkCollisions(ghost1.getPosX(),ghost1.getPosY(),ghost1.getMoves())) {
 				ghost1.setPosX(ghost1.getPosX()+ ghost1.getVelX());
 				ghost1.setPosY(ghost1.getPosY()+ghost1.getVelY()); 

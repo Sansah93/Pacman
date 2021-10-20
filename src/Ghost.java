@@ -5,7 +5,16 @@ public class Ghost {
 	private boolean alive;
 	private int vel=50;
 	private int couleur,posX,posY,velX=50,velY=50;
+	 private char moves;
 	
+	public char getMoves() {
+		return moves;
+	}
+
+	public void setMoves(char moves) {
+		this.moves = moves;
+	}
+
 	public Ghost(boolean alive) {
 		
 		this.alive = alive;

@@ -20,7 +20,7 @@ public class myKeyAdapter extends KeyAdapter {
 				
 			default:
 				game.move('p');
-				System.out.println("mauvaise touche");
+				//System.out.println("mauvaise touche");
 			}
 		}
 }

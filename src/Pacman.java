@@ -8,13 +8,14 @@
 	
 	public class Pacman	extends JPanel{
 		
-		private int x ,y,velY,velX,score,cpt = 0,cpt2 = 0,rndm,rndm2,rndm3,rndm4;
+		private int x ,y,velY,velX,score,cpt = 0,cpt2 = 0,rndm,rndm2,rndm3,rndm4,velG=5;
 		private final int vel=50;
 		private  int map[][];
-		private char moves,movesG1 = 'a',movesG2,movesG3,movesG4;
+		private char moves;//movesG1 = 'a',movesG2,movesG3,movesG4;
 		private Color couleur = Color.YELLOW;
 		private  int life;
 		private boolean jauneP,orange;
+		
 		
 		Ghost ghost1= new Ghost(true);
 		Ghost ghost2= new Ghost(true);
@@ -26,6 +27,7 @@
 		}
 		
 		public Pacman() {
+			this.life=3;
 		
 		  //map=new int[12][12];            //coté gauche
 	       this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -41,7 +43,7 @@
 	    	   					 {1,0,0,3,0,0,2,0,0,0,0,0,0,0,1},
 	    	   					 {1,0,0,0,0,0,2,0,0,0,0,0,0,0,1},
 	    	   					 {1,0,0,0,0,0,2,0,0,0,0,0,0,0,1},
-	    	   					 {1,0,0,0,0,0,2,0,0,0,0,5,0,0,1},	
+	    	   					 {1,2,0,0,0,0,2,0,0,0,0,5,0,0,1},	
 	    	   					 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 				};							//coté droit
 				
@@ -51,15 +53,15 @@
 
 		ghost2.setPosX(300);
 		ghost2.setPosY(300);
-		rndmGhost2(ghost2);
+		rndmGhost(ghost2);
 
 		ghost3.setPosX(400);
 		ghost3.setPosY(400);
-		rndmGhost3(ghost3);
+		rndmGhost(ghost3);
 
 		ghost4.setPosX(500);
 		ghost4.setPosY(500);
-		rndmGhost4(ghost4);
+		rndmGhost(ghost4);
 		}
 		
 		
@@ -70,7 +72,7 @@
 			
 			int height = 700;
 			super.paint(g);
-			System.out.println(movesG1);
+			//System.out.println(movesG1);
 			/*g.drawLine(width-5, 5, width-5, height-5);
 			g.drawLine(5, 5, 5, height-5);
 			g.drawLine(5,5,width-5,5);
@@ -124,7 +126,7 @@
 		  	g.setColor(couleur);
 		  	
 		  	//g.drawRect(x,y,50,50);
-		  	System.out.println(x + " " + y+ " score : " + score);
+		  	//System.out.println(x + " " + y+ " score : " + score);
 		  	g.fillRect(x, y, 50, 50);
 		  	
 		  	
@@ -148,14 +150,17 @@
 					t.stop();
 				}*/
 				checkPacGommes();
-				checkPacViolet();checkPacOrange();
+				checkPacViolet();
+				checkPacOrange();
 				checkPacVert();
+				
 				if(!checkCollisions(x,y,moves)) {
 				x=x+ velX;
 				y= y+velY;
 				repaint(); 
 				}else {
 					t.stop();
+					
 				}
 			}
 		};
@@ -268,6 +273,7 @@ public boolean checkPacOrange() {
 					map[(x/vel)-1][(y/vel)-1] = 0;
 					score += 300;
 					couleur = Color.ORANGE;
+					velG=10;
 					return true;
 				}else if(orange) {
 					cpt2++;
@@ -275,6 +281,7 @@ public boolean checkPacOrange() {
 					couleur = Color.YELLOW;
 					cpt2 = 0;
 					orange = false;
+					velG=5;
 				}
 			return false;
 		}
@@ -347,10 +354,45 @@ this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 			return false;
 		}
 		
+		public void checkGameOver() {
+			if( ((ghost1.getPosX()==x ) && (ghost1.getPosY()==y )) ||
+					((ghost2.getPosX()==x ) && (ghost2.getPosY()==y )) ||
+					((ghost3.getPosX()==x ) && (ghost3.getPosY()==y ))
+					|| ((ghost4.getPosX()==x ) && (ghost4.getPosY()==y ))) {
+				System.out.println("tu t'es fait bouffé connard");
+				  this.life--;
+				  ghost1.setPosX(200);
+					ghost1.setPosY(200);
+					rndmGhost(ghost1);
+
+					ghost2.setPosX(300);
+					ghost2.setPosY(300);
+					rndmGhost(ghost2);
+
+					ghost3.setPosX(400);
+					ghost3.setPosY(400);
+					rndmGhost(ghost3);
+
+					ghost4.setPosX(500);
+					ghost4.setPosY(500);
+					rndmGhost(ghost4);
+					x=100;y=100;
+				  
+				  if(this.life==0) {
+					  System.out.println("t'as perdu!");
+					  
+				  }
+				
+			}
+			
+			 
+		}
+		
 		
 		ActionListener actionG = new ActionListener() {
-			public void actionPerformed(ActionEvent event) {	
-				if(!checkCollisions(ghost1.getPosX(),ghost1.getPosY(),movesG1)) {
+			public void actionPerformed(ActionEvent event) {
+				checkGameOver();
+				if(!checkCollisions(ghost1.getPosX(),ghost1.getPosY(),ghost1.getMoves())) {
 				ghost1.setPosX(ghost1.getPosX()+ ghost1.getVelX());
 				ghost1.setPosY(ghost1.getPosY()+ghost1.getVelY()); 
 				
@@ -363,44 +405,45 @@ this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 				}else {
 					rndmGhost(ghost1);
 				}
-				if(!checkCollisions(ghost2.getPosX(),ghost2.getPosY(),movesG2)) {
+				if(!checkCollisions(ghost2.getPosX(),ghost2.getPosY(),ghost2.getMoves())) {
+					//System.out.println(ghost2.getMoves());
 					ghost2.setPosX(ghost2.getPosX()+ ghost2.getVelX());
 					ghost2.setPosY(ghost2.getPosY()+ghost2.getVelY()); 
 					
 					if(rndm2 == 10) {
-						rndmGhost2(ghost2);
+						rndmGhost(ghost2);
 						rndm2 = 0;
 					}
 					rndm2++;
 					repaint(); 
 					}else {
-						rndmGhost2(ghost2);
+						rndmGhost(ghost2);
 					}
-				if(!checkCollisions(ghost3.getPosX(),ghost3.getPosY(),movesG3)) {
+				if(!checkCollisions(ghost3.getPosX(),ghost3.getPosY(),ghost3.getMoves())) {
 					ghost3.setPosX(ghost3.getPosX()+ ghost3.getVelX());
 					ghost3.setPosY(ghost3.getPosY()+ghost3.getVelY()); 
 					
 					if(rndm3 == 10) {
-						rndmGhost3(ghost3);
+						rndmGhost(ghost3);
 						rndm3 = 0;
 					}
 					rndm3++;
 					repaint(); 
 					}else {
-						rndmGhost3(ghost3);
+						rndmGhost(ghost3);
 					}
-				if(!checkCollisions(ghost4.getPosX(),ghost4.getPosY(),movesG4)) {
+				if(!checkCollisions(ghost4.getPosX(),ghost4.getPosY(),ghost4.getMoves())) {
 					ghost4.setPosX(ghost4.getPosX()+ ghost4.getVelX());
 					ghost4.setPosY(ghost4.getPosY()+ghost4.getVelY()); 
 					
 					if(rndm4 == 10) {
-						rndmGhost4(ghost4);
+						rndmGhost(ghost4);
 						rndm4 = 0;
 					}
 					rndm4++;
 					repaint(); 
 					}else {
-						rndmGhost4(ghost4);
+						rndmGhost(ghost4);
 					}
 			}
 		};
@@ -408,7 +451,9 @@ this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 		
 		
 		
-		Timer tG = new Timer(ghost1.getVel()*5,actionG);
+		Timer tG = new Timer(ghost1.getVel()*velG,actionG);
+		
+		
 		
 		public void moveG(char move,Ghost ghost) {
 			switch(move) {
@@ -416,6 +461,7 @@ this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 					  ghost.setVelY(-ghost.getVel());
 					  
 					  tG.start();
+					  
 			break;
 			case 's' : ghost.setVelX(0);
 					   ghost.setVelY(ghost.getVel());
@@ -426,10 +472,12 @@ this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 			           ghost.setVelY(0);
 			           
 			           tG.start();
+			          
 			break;
 			case 'd' :ghost.setVelX(ghost.getVel());
 					  ghost.setVelY(0);
-					  tG.start();		  
+					  tG.start();
+					
 			
 			break;				 
 			
@@ -439,51 +487,16 @@ this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 		public void rndmGhost(Ghost ghost) {
 			int r = (int) (Math.random()*4);
 			switch(r) {
-			case  0 :moveG('z',ghost);movesG1 = 'z';break;
+			case  0 :moveG('z',ghost);ghost.setMoves('z');break;
 
-			case  1 :moveG('s',ghost);movesG1 = 's';break;
-			case  2 :moveG('q',ghost);movesG1 = 'q';break;
-			case  3 :moveG('d',ghost);movesG1 = 'd';break;
+			case  1 :moveG('s',ghost);ghost.setMoves('s');break;
+			case  2 :moveG('q',ghost);ghost.setMoves('q');break;
+			case  3 :moveG('d',ghost);ghost.setMoves('d');break;
 			
 			}
 			
 		}
-		public void rndmGhost2(Ghost ghost) {
-			int r = (int) (Math.random()*4);
-			switch(r) {
-			case  0 :moveG('z',ghost);movesG2 = 'z';break;
-
-			case  1 :moveG('s',ghost);movesG2 = 's';break;
-			case  2 :moveG('q',ghost);movesG2 = 'q';break;
-			case  3 :moveG('d',ghost);movesG2 = 'd';break;
-			
-			}
-			
-		}
-		public void rndmGhost3(Ghost ghost) {
-			int r = (int) (Math.random()*4);
-			switch(r) {
-			case  0 :moveG('z',ghost);movesG3 = 'z';break;
-
-			case  1 :moveG('s',ghost);movesG3 = 's';break;
-			case  2 :moveG('q',ghost);movesG3 = 'q';break;
-			case  3 :moveG('d',ghost);movesG3 = 'd';break;
-			
-			}
-			
-		}
-		public void rndmGhost4(Ghost ghost) {
-			int r = (int) (Math.random()*4);
-			switch(r) {
-			case  0 :moveG('z',ghost);movesG4 = 'z';break;
-
-			case  1 :moveG('s',ghost);movesG4 = 's';break;
-			case  2 :moveG('q',ghost);movesG4 = 'q';break;
-			case  3 :moveG('d',ghost);movesG4 = 'd';break;
-			
-			}
-			
-		}
+		
 		}
 	
 	

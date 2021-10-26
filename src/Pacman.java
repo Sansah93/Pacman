@@ -23,6 +23,7 @@
 		Ghost ghost2= new Ghost(true);
 		Ghost ghost3= new Ghost(true);
 		Ghost ghost4= new Ghost(true);
+	
 		public void setXY(int x, int y) {
 			this.x=x;
 			this.y=y;
@@ -31,7 +32,7 @@
 		public Pacman() {
 			this.life=3;
 		
-		  //map=new int[12][12];            //coté gauche
+		  //map=new int[12][12];            //cotï¿½ gauche
 	       this.map= new int[][]{{1,1,1,1,1,1,1,6,1,1,1,1,1,1,1},
 	    	   					 {1,0,0,0,0,0,1,0,1,0,0,0,0,2,1},
 	    	   					 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -47,7 +48,7 @@
 	    	   					 {1,0,0,0,0,0,2,0,0,0,0,0,0,0,1},
 	    	   					 {1,2,0,0,0,0,2,0,0,0,0,5,0,0,1},	
 	    	   					 {1,1,1,1,1,1,1,6,1,1,1,1,1,1,1}
-				};							//coté droit
+				};							//cotï¿½ droit
 				
 		ghost1.setPosX(200);
 		ghost1.setPosY(200);
@@ -149,7 +150,7 @@
 		  	g.setColor(couleur);
 		  	
 		  	//g.drawRect(x,y,50,50);
-		  	System.out.println(x + " " + y+ " score : " + score);
+		  	//System.out.println(x + " " + y+ " score : " + score);
 		  	g.fillRect(x, y, 50, 50);
 		  	
 			}else {
@@ -169,6 +170,7 @@
 			
 			
 				t.start();
+				tG.restart();
 				
 		}
 		
@@ -313,14 +315,18 @@ public boolean checkPacOrange() {
 					map[(x/vel)-1][(y/vel)-1] = 0;
 					score += 300;
 					couleur = Color.ORANGE;
-				
+					
 					
 					return true;
 				}else if(orange) {
+					tG.stop();
+					tG1.start();
 					cpt2++;
 				}if(cpt2 >= 15){
-					
-					System.out.println(" avant"+ghost1.getPosX() +"  "+ghost1.getPosY());
+					cpt2 =0;
+					tG1.stop();
+					tG.start();
+					//System.out.println(" avant"+ghost1.getPosX() +"  "+ghost1.getPosY());
 					couleur = Color.YELLOW;
 					cpt2 = 0;
 					orange = false;
@@ -371,12 +377,12 @@ public void checkPortailG(Ghost ghost) {
 	if( ghost.getPosX()>=750) {
 		ghost.setPosX(50);
 		
-		System.out.println("x "+x+" y "+y);
+		//System.out.println("x "+x+" y "+y);
 	}
 	else if(ghost.getPosX()<=50) {
 		ghost.setPosX(750);
 		
-		System.out.println("x "+x+" y "+y);
+		//System.out.println("x "+x+" y "+y);
 	}
 	
 }
@@ -460,7 +466,7 @@ this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 					((ghost3.getPosX()==x ) && (ghost3.getPosY()==y ))
 					|| ((ghost4.getPosX()==x ) && (ghost4.getPosY()==y ))) {
 				
-				System.out.println("tu t'es fait bouffé connard");
+				System.out.println("tu t'es fait bouffï¿½ connard");
 				  this.life--;
 				  ghost1.setPosX(200);
 					ghost1.setPosY(200);
@@ -550,6 +556,7 @@ this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 		
 		ActionListener actionG = new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				System.out.println(timer);
 				if(!jauneP) {
 					checkGameOver();
 				}
@@ -622,8 +629,8 @@ this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 		
 		
 		
-		Timer tG = new Timer(/*ghost1.getVel()*velG*/timer,actionG);
-		
+		Timer tG = new Timer(timer,actionG);
+		Timer tG1 = new Timer(timer*2,actionG);
 		
 		
 		
@@ -634,23 +641,23 @@ this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 			case 'z' :ghost.setVelX(0);;
 					  ghost.setVelY(-ghost.getVel());
 					  
-					  tG.start();
+					
 					  
 			break;
 			case 's' : ghost.setVelX(0);
 					   ghost.setVelY(ghost.getVel());
 					  
-			tG.start();
+			
 			break;
 			case 'q' : ghost.setVelX(-ghost.getVel());
 			           ghost.setVelY(0);
 			           
-			           tG.start();
+			        
 			          
 			break;
 			case 'd' :ghost.setVelX(ghost.getVel());
 					  ghost.setVelY(0);
-					  tG.start();
+					  
 					
 			
 			break;				 

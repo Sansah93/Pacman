@@ -16,7 +16,8 @@
 		private  int life;
 		private boolean jauneP,orange;
 		int random=0,random2=0,random3=0,random4=0;
-		
+		private boolean gameOver=false;
+		private int timer=250;
 		
 		Ghost ghost1= new Ghost(true);
 		Ghost ghost2= new Ghost(true);
@@ -32,13 +33,13 @@
 		
 		  //map=new int[12][12];            //coté gauche
 	       this.map= new int[][]{{1,1,1,1,1,1,1,6,1,1,1,1,1,1,1},
-	    	   					 {1,0,0,0,0,0,0,0,0,0,0,0,0,2,1},
+	    	   					 {1,0,0,0,0,0,1,0,1,0,0,0,0,2,1},
 	    	   					 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	    	   					 {1,0,0,0,0,0,4,0,0,0,0,0,0,0,1},
 	    	   					 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	    	   					 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	    	   					 {1,0,0,2,0,0,1,1,1,0,0,0,0,0,1},
-	    	   					 {1,0,0,0,0,0,0,1,0,0,0,0,0,0,1}, //en bas 
+	    	   					 {1,0,0,2,0,0,1,0,1,0,0,0,0,0,1},
+	    	   					 {1,0,0,0,0,0,1,1,1,0,0,0,0,0,1}, //en bas 
 	    	   		/*en haut*/	 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	    	   					 {1,0,0,2,0,0,0,0,0,0,0,0,0,0,1},
 	    	   					 {1,0,0,3,0,0,2,0,0,0,0,0,0,0,1},
@@ -69,6 +70,7 @@
 	
 		@Override
 		public void paint(Graphics g) {
+			if(!gameOver) {
 			int width = 700;
 			
 			int height = 700;
@@ -111,27 +113,53 @@
 			}
 			if(ghost1.isAlive()) {
 				g.setColor(Color.cyan);
+				
 				g.fillRect(ghost1.getPosX(), ghost1.getPosY(), vel, vel);
 			}
+			else {
+				g.setColor(Color.BLUE);
+				g.fillRect(ghost1.getPosX(), ghost1.getPosY(), vel, vel);
+			}
+			
 			if(ghost2.isAlive()) {
 				g.setColor(Color.RED);
 				g.fillRect(ghost2.getPosX(), ghost2.getPosY(), vel, vel);
 			}
+			else {
+				g.setColor(Color.BLUE);
+				g.fillRect(ghost2.getPosX(), ghost2.getPosY(), vel, vel);
+			}
+			
 			if(ghost3.isAlive()) {
 				g.setColor(Color.GRAY);
+				g.fillRect(ghost3.getPosX(), ghost3.getPosY(), vel, vel);
+			}
+			else {
+				g.setColor(Color.BLUE);
 				g.fillRect(ghost3.getPosX(), ghost3.getPosY(), vel, vel);
 			}
 			if(ghost4.isAlive()) {
 				g.setColor(Color.GREEN);
 				g.fillRect(ghost4.getPosX(), ghost4.getPosY(), vel, vel);
 			}
+			else {
+				g.setColor(Color.BLUE);
+				g.fillRect(ghost4.getPosX(), ghost4.getPosY(), vel, vel);
+			}
 		  	g.setColor(couleur);
 		  	
 		  	//g.drawRect(x,y,50,50);
-		  	//System.out.println(x + " " + y+ " score : " + score);
+		  	System.out.println(x + " " + y+ " score : " + score);
 		  	g.fillRect(x, y, 50, 50);
 		  	
-		  	
+			}else {
+                JButton button = new JButton();
+                this.add(button);
+                g.drawString("tu as perdu", 150, 150);
+                
+                t.stop();
+                tG.stop();
+            }	
 		}
 		
 		
@@ -156,6 +184,10 @@
 				checkPacOrange();
 				checkPacVert();
 				checkPortail();
+				if(!jauneP) {
+					checkGameOver();
+				}
+				
 			
 				
 				if(!checkCollisions(x,y,moves)) {
@@ -264,7 +296,7 @@
 					return true;
 				}else if(jauneP) {
 					cpt++;
-				}if(cpt >= 15){
+				}if(cpt >= 25){
 					couleur = Color.YELLOW;
 					cpt = 0;
 					jauneP = false;
@@ -275,31 +307,60 @@ public boolean checkPacOrange() {
 			
 			//System.out.println(map[(x/vel)-1][(y/vel)-1] == 3);
 				if(map[(x/vel)-1][(y/vel)-1] == 4){
+					//timer =1000;
+					
 					orange = true;
 					map[(x/vel)-1][(y/vel)-1] = 0;
 					score += 300;
 					couleur = Color.ORANGE;
-					velG=10;
+				
+					
 					return true;
 				}else if(orange) {
 					cpt2++;
 				}if(cpt2 >= 15){
+					
+					System.out.println(" avant"+ghost1.getPosX() +"  "+ghost1.getPosY());
 					couleur = Color.YELLOW;
 					cpt2 = 0;
 					orange = false;
-					velG=5;
+					//velG=5;
+					/*if(ghost1.getPosX()%50!=0) {
+						System.out.println("ljljljlkhjlhljh");
+						
+						
+					}
+					System.out.println(ghost1.getPosX() +"  "+ghost1.getPosY());
+					if(ghost1.getPosY()%50!=0) {
+						System.out.println("yesssssss");
+						ghost1.setPosY(600);
+						System.out.println(ghost1.getPosX() +"  "+ghost1.getPosY());
+						
+					}
+					
+					System.out.println( " apres"+ghost1.getPosX() +"  "+ghost1.getPosY());
+					ghost1.setVel(50);*/
+					
+					ghost1.setAlive(true);
+					ghost2.setAlive(true);
+					ghost3.setAlive(true);
+					ghost4.setAlive(true);
+					
 				}
 			return false;
 		}
 
+public void setvelG(int i) {
+	this.velG=i;
+}
 public void checkPortail() {
-	if( x==750) {
-		x=50;
+	if( x>=750) {
+		x=100;
 		
 		System.out.println("x "+x+" y "+y);
 	}
-	else if( x==50) {
-		x=750;
+	else if( x<=50) {
+		x=700;
 		
 		System.out.println("x "+x+" y "+y);
 	}
@@ -307,12 +368,12 @@ public void checkPortail() {
 }
 
 public void checkPortailG(Ghost ghost) {
-	if( ghost.getPosX()==750) {
+	if( ghost.getPosX()>=750) {
 		ghost.setPosX(50);
 		
 		System.out.println("x "+x+" y "+y);
 	}
-	else if(ghost.getPosX()==50) {
+	else if(ghost.getPosX()<=50) {
 		ghost.setPosX(750);
 		
 		System.out.println("x "+x+" y "+y);
@@ -389,10 +450,16 @@ this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 		}
 		
 		public void checkGameOver() {
+			
+		
+			if(orange==false) {
+				
+			
 			if( ((ghost1.getPosX()==x ) && (ghost1.getPosY()==y )) ||
 					((ghost2.getPosX()==x ) && (ghost2.getPosY()==y )) ||
 					((ghost3.getPosX()==x ) && (ghost3.getPosY()==y ))
 					|| ((ghost4.getPosX()==x ) && (ghost4.getPosY()==y ))) {
+				
 				System.out.println("tu t'es fait bouffé connard");
 				  this.life--;
 				  ghost1.setPosX(200);
@@ -411,15 +478,56 @@ this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 					ghost4.setPosY(500);
 					rndmGhost(ghost4);
 					x=100;y=100;
-				  
+					
+				
+				
 				  if(this.life==0) {
 					  System.out.println("t'as perdu!");
+					  gameOver=true;
+					  
 					  
 				  }
+				  
+				  
 				
 			}
 			
 			 
+		 }
+			else {
+				ghost1.setAlive(false);
+				if((ghost1.getPosX()==x ) && (ghost1.getPosY()==y )) {
+					
+					ghost1.setPosX(200);
+					ghost1.setPosY(200);
+					
+				}
+				ghost2.setAlive(false);
+				if((ghost2.getPosX()==x ) && (ghost2.getPosY()==y )) {
+					
+					ghost2.setPosX(200);
+					ghost2.setPosY(200);
+					
+				}
+				
+				ghost3.setAlive(false);
+				if((ghost3.getPosX()==x ) && (ghost3.getPosY()==y )) {
+					
+					ghost3.setPosX(200);
+					ghost3.setPosY(200);
+					
+				}
+				
+				ghost4.setAlive(false);
+				if((ghost4.getPosX()==x ) && (ghost4.getPosY()==y )) {
+					
+					ghost4.setPosX(200);
+					ghost4.setPosY(200);
+					
+				}
+				
+				
+			}
 		}
 		/*public void checkGhostRandom(Ghost ghost,int random) {
 			
@@ -442,7 +550,10 @@ this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 		
 		ActionListener actionG = new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				checkGameOver();
+				if(!jauneP) {
+					checkGameOver();
+				}
+				
 				checkPortailG(ghost1);
 				checkPortailG(ghost2);
 				checkPortailG(ghost3);
@@ -511,7 +622,10 @@ this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 		
 		
 		
-		Timer tG = new Timer(ghost1.getVel()*velG,actionG);
+		Timer tG = new Timer(/*ghost1.getVel()*velG*/timer,actionG);
+		
+		
+		
 		
 		
 		

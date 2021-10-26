@@ -4,7 +4,8 @@ import javax.swing.JPanel;
 public class Ghost {
 	private boolean alive;
 	private int vel=50;
-	private int couleur,posX,posY,velX=50,velY=50;
+	private int posX,posY,velX=50,velY=50;
+	private Color couleur;
 	 private char moves;
 	
 	public char getMoves() {
@@ -52,12 +53,12 @@ public class Ghost {
 		this.velY = velY;
 	}
 
-	public int getCouleur() {
+	public Color getCouleur() {
 		return couleur;
 	}
 
-	public void setCouleur(int couleur) {
-		this.couleur = couleur;
+	public void setCouleur(Color cyan) {
+		this.couleur = cyan;
 	}
 
 	public int getPosX() {

@@ -1,12 +1,16 @@
 	
 	import javax.swing.*;
-	import java.awt.event.ActionListener;
-	import java.awt.event.ActionEvent;
+
+
+
+import java.awt.event.ActionListener;
+import java.util.Scanner;
+import java.awt.event.ActionEvent;
 	import java.awt.*; 
 	
 	
 	
-	public class Pacman	extends JPanel{
+	public class Pacman	extends JPanel {
 		
 		private int x ,y,velY,velX,score,cpt = 0,cpt2 = 0,rndm,rndm2,rndm3,rndm4,velG=5;
 		private final int vel=50;
@@ -32,23 +36,23 @@
 		public Pacman() {
 			this.life=3;
 		
-		  //map=new int[12][12];            //cotï¿½ gauche
+		  //map=new int[12][12];            //coté gauche
 	       this.map= new int[][]{{1,1,1,1,1,1,1,6,1,1,1,1,1,1,1},
 	    	   					 {1,0,0,0,0,0,1,0,1,0,0,0,0,2,1},
 	    	   					 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	    	   					 {1,0,0,0,0,0,4,0,0,0,0,0,0,0,1},
-	    	   					 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	    	   					 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	    	   					 {1,0,0,2,0,0,1,0,1,0,0,0,0,0,1},
-	    	   					 {1,0,0,0,0,0,1,1,1,0,0,0,0,0,1}, //en bas 
-	    	   		/*en haut*/	 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	    	   					 {1,0,0,2,0,0,0,0,0,0,0,0,0,0,1},
-	    	   					 {1,0,0,3,0,0,2,0,0,0,0,0,0,0,1},
-	    	   					 {1,0,0,0,0,0,2,0,0,0,0,0,0,0,1},
-	    	   					 {1,0,0,0,0,0,2,0,0,0,0,0,0,0,1},
-	    	   					 {1,2,0,0,0,0,2,0,0,0,0,5,0,0,1},	
+	    	   					 {1,1,1,1,1,1,4,0,0,0,0,0,0,0,1},
+	    	   					 {1,0,0,0,0,0,0,1,1,1,1,0,0,0,1},
+	    	   					 {1,0,0,0,0,1,0,0,0,0,1,0,0,0,1},
+	    	   					 {1,0,0,2,0,0,0,0,0,0,1,0,0,0,1},
+	    	   					 {1,0,0,0,0,0,0,0,0,0,1,0,0,0,1}, //en bas 
+	    	   		/*en haut*/	 {1,0,0,0,0,0,0,1,1,1,1,0,0,0,1},
+	    	   					 {1,0,0,2,0,2,2,2,2,1,0,0,0,0,1},
+	    	   					 {1,0,0,3,1,0,2,0,0,0,0,0,0,0,1},
+	    	   					 {1,0,0,0,1,0,2,2,2,2,2,2,2,0,1},
+	    	   					 {1,0,1,0,1,0,2,0,2,2,2,2,2,0,1},
+	    	   					 {1,2,1,0,2,2,1,0,1,0,0,5,0,0,1},	
 	    	   					 {1,1,1,1,1,1,1,6,1,1,1,1,1,1,1}
-				};							//cotï¿½ droit
+				};							//coté droit
 				
 		ghost1.setPosX(200);
 		ghost1.setPosY(200);
@@ -71,7 +75,14 @@
 	
 		@Override
 		public void paint(Graphics g) {
+			if(score>=5000) {
+			super.paint(g);
+			g.drawString("tu as gagné", 150, 150);
+			} else 
+				
+			
 			if(!gameOver) {
+			
 			int width = 700;
 			
 			int height = 700;
@@ -149,13 +160,91 @@
 			}
 		  	g.setColor(couleur);
 		  	
-		  	//g.drawRect(x,y,50,50);
+		  	Font currentFont = g.getFont();
+		  	Font newFont = currentFont.deriveFont(currentFont.getSize() * 4.5F);
+		  	 g.setFont(newFont);
+		  	 g.setColor(Color.RED);
+		  	 g.drawString(" SCORE", 800, 200);
+		  	 g.drawString(Integer.toString(score), 900, 250);
+		  	 g.drawString("life", 875, 385);
+		  	 
+		  
+            
+		  	 for(int i=1;i<=life;i++) {
+		  		g.fillRect(800+(i*50),400 , 15, 15); 
+		  		 
+		  	 }
+		  	/* g.setColor(Color.yellow);
+		  	g.drawRect(x,y,50,50);*/
 		  	//System.out.println(x + " " + y+ " score : " + score);
+		  	 
+	  		  //g.fillArc(x,y,50,50,-150,300); //gauche
+	  		 // g.fillArc(x,y,50,50,30,300); //droite
+	  		// g.fillArc(x,y,50,50,120,300); //haut
+		  	 // g.fillArc(x,y,50,50,-60,300); bas
+	  		  
+		  	/* if(moves=='d') {
+		  		 if(jauneP) {
+		  			 System.out.println("jhjhjhjhjhjhjh");
+		  			//couleur = new Color(255,255,204);
+		  			g.setColor(Color.GREEN);
+		  		  g.fillArc(x,y,50,50,30,300);
+		  		 }else
+		  		// System.out.println("droite!!");
+		  		 g.setColor(Color.yellow);
+		  		  g.fillArc(x,y,50,50,30,300);
+		  		  
+		  	 }
+		  	 else 	if(moves=='q') {
+		  		 //System.out.println("gauche!!");
+		  		if(jauneP) {
+		  			 System.out.println("jhjhjhjhjhjhjh");
+		  			//couleur = new Color(255,255,204);
+		  			g.setColor(Color.GREEN);
+			  		  g.fillArc(x,y,50,50,30,300);
+		  		 }else
+		  		 g.setColor(Color.yellow);
+		  		g.fillArc(x,y,50,50,-150,300);
+		  		couleur=couleur;
+		  	 }
+		  	else if(moves=='z') {
+		  		 //System.out.println("haut!!");
+		  		if(jauneP) {
+		  			 System.out.println("jhjhjhjhjhjhjh");
+		  			//couleur = new Color(255,255,204);
+		  			 g.setColor(Color.GREEN);
+			  		  g.fillArc(x,y,50,50,30,300);
+		  		 }else
+		  		 g.setColor(Color.yellow);
+		  		g.fillArc(x,y,50,50,120,300);
+		  		couleur=couleur;
+		  	 }
+		  	else	if(moves=='s') {
+		  		// System.out.println("bas!!");
+		  		if(jauneP) {
+		  			 System.out.println("jhjhjhjhjhjhjh");
+		  			//couleur = new Color(255,255,204);
+		  			g.setColor(Color.GREEN);
+			  		  g.fillArc(x,y,50,50,30,300);
+		  		 }else
+		  		 g.setColor(Color.yellow);
+		  		g.fillArc(x,y,50,50,-60,300);
+		  		couleur=couleur;
+		  	 }*/
+			g.setColor(couleur);
 		  	g.fillRect(x, y, 50, 50);
 		  	
 			}else {
-                JButton button = new JButton();
+				super.paint(g);
+                /*JButton button = new JButton();
                 this.add(button);
+                g.drawString("rejouer", 300, 250);
+                
+                button.setSize(50, 50);
+                button.setLocation(300, 300);
+                button.setBackground(Color.GREEN);
+                button.addActionListener(buttonListener);
+               */
                 g.drawString("tu as perdu", 150, 150);
                 
                 t.stop();
@@ -172,7 +261,59 @@
 				t.start();
 				tG.restart();
 				
-		}
+		} 
+		 public void mapReset() {
+			  //map=new int[12][12];            //coté gauche
+		       this.map= new int[][]{{1,1,1,1,1,1,1,6,1,1,1,1,1,1,1},
+		    	   					 {1,0,0,0,0,0,1,0,1,0,0,0,0,2,1},
+		    	   					 {1,0,0,0,0,2,2,2,2,0,0,0,0,0,1},
+		    	   					 {1,0,1,1,2,0,4,0,0,0,0,0,0,0,1},
+		    	   					 {1,2,2,2,2,0,0,0,0,0,0,0,0,0,1},
+		    	   					 {1,1,1,1,0,1,0,0,0,0,0,0,0,0,1},
+		    	   					 {1,0,0,2,0,0,1,0,1,0,0,0,0,0,1},
+		    	   					 {1,0,0,0,0,0,1,1,1,0,0,0,0,0,1}, //en bas 
+		    	   		/*en haut*/	 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		    	   					 {1,0,0,2,0,0,0,2,2,0,0,0,0,0,1},
+		    	   					 {1,0,0,3,0,0,2,2,2,0,0,0,0,0,1},
+		    	   					 {1,0,0,0,0,2,2,2,0,2,0,0,0,0,1},
+		    	   					 {1,0,0,0,0,0,2,0,2,2,0,0,0,0,1},
+		    	   					 {1,2,0,0,0,0,2,0,0,0,0,5,0,0,1},	
+		    	   					 {1,1,1,1,1,1,1,6,1,1,1,1,1,1,1}
+					};							//coté droit
+		 }
+		
+		ActionListener buttonListener=new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				 
+				life=3;
+				mapReset();
+				score=0;
+				
+				gameOver=false;
+				  ghost1.setPosX(200);
+					ghost1.setPosY(200);
+					rndmGhost(ghost1);
+
+					ghost2.setPosX(300);
+					ghost2.setPosY(300);
+					rndmGhost(ghost2);
+
+					ghost3.setPosX(450);
+					ghost3.setPosY(450);
+					rndmGhost(ghost3);
+
+					ghost4.setPosX(500);
+					ghost4.setPosY(500);
+					rndmGhost(ghost4);
+					x=100;y=100;
+					revalidate();
+					repaint();
+				
+			}
+		};
 		
 		ActionListener action = new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -363,12 +504,12 @@ public void checkPortail() {
 	if( x>=750) {
 		x=100;
 		
-		System.out.println("x "+x+" y "+y);
+		//System.out.println("x "+x+" y "+y);
 	}
 	else if( x<=50) {
 		x=700;
 		
-		System.out.println("x "+x+" y "+y);
+		//System.out.println("x "+x+" y "+y);
 	}
 	
 }
@@ -392,6 +533,7 @@ public boolean checkPacVert() {
 	//System.out.println(map[(x/vel)-1][(y/vel)-1] == 3);
 		if(map[(x/vel)-1][(y/vel)-1] == 5){
 			score += 300;
+			
 this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 					 {1,0,0,0,0,0,0,0,0,0,0,0,0,2,1},
 					 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -466,7 +608,7 @@ this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 					((ghost3.getPosX()==x ) && (ghost3.getPosY()==y ))
 					|| ((ghost4.getPosX()==x ) && (ghost4.getPosY()==y ))) {
 				
-				System.out.println("tu t'es fait bouffï¿½ connard");
+				//System.out.println("tu t'es fait bouffé connard");
 				  this.life--;
 				  ghost1.setPosX(200);
 					ghost1.setPosY(200);
@@ -490,7 +632,50 @@ this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 				  if(this.life==0) {
 					  System.out.println("t'as perdu!");
 					  gameOver=true;
-					  
+					int yes_no=  JOptionPane.showConfirmDialog(this, "rejouer","Choisissez une réponse",JOptionPane.YES_NO_OPTION);
+				        // Affiche le nombre saisit par l'utilisateur
+					if(yes_no==JOptionPane.YES_OPTION) {
+						 gameOver=false;
+						 life =3;
+						 score=0;
+						//map=new int[12][12];            //coté gauche
+					       this.map= new int[][]{{1,1,1,1,1,1,1,6,1,1,1,1,1,1,1},
+					    	   					 {1,0,0,0,0,0,1,0,1,0,0,0,0,2,1},
+					    	   					 {1,0,0,0,0,2,2,2,2,0,0,0,0,0,1},
+					    	   					 {1,0,1,1,2,0,4,0,0,0,0,0,0,0,1},
+					    	   					 {1,2,2,2,2,0,0,0,0,0,0,0,0,0,1},
+					    	   					 {1,1,1,1,0,1,0,0,0,0,0,0,0,0,1},
+					    	   					 {1,0,0,2,0,0,1,0,1,0,0,0,0,0,1},
+					    	   					 {1,0,0,0,0,0,1,1,1,0,0,0,0,0,1}, //en bas 
+					    	   		/*en haut*/	 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+					    	   					 {1,0,0,2,0,0,0,2,2,0,0,0,0,0,1},
+					    	   					 {1,0,0,3,0,0,2,2,2,0,0,0,0,0,1},
+					    	   					 {1,0,0,0,0,2,2,2,0,2,0,0,0,0,1},
+					    	   					 {1,0,0,0,0,0,2,0,2,2,0,0,0,0,1},
+					    	   					 {1,2,0,0,0,0,2,0,0,0,0,5,0,0,1},	
+					    	   					 {1,1,1,1,1,1,1,6,1,1,1,1,1,1,1}
+								};							//coté droit
+			  ghost1.setPosX(200);
+				ghost1.setPosY(200);
+				rndmGhost(ghost1);
+
+				ghost2.setPosX(300);
+				ghost2.setPosY(300);
+				rndmGhost(ghost2);
+
+				ghost3.setPosX(450);
+				ghost3.setPosY(450);
+				rndmGhost(ghost3);
+
+				ghost4.setPosX(500);
+				ghost4.setPosY(500);
+				rndmGhost(ghost4);	
+					
+					}
+					else if(yes_no==JOptionPane.NO_OPTION) {
+						System.out.println("au revoir");
+					}
+				      
 					  
 				  }
 				  
@@ -556,7 +741,7 @@ this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 		
 		ActionListener actionG = new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				System.out.println(timer);
+				//System.out.println(timer);
 				if(!jauneP) {
 					checkGameOver();
 				}
@@ -571,6 +756,7 @@ this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 				checkGhostRandom( ghost4,random4);*/
 				
 				if(!checkCollisions(ghost1.getPosX(),ghost1.getPosY(),ghost1.getMoves())) {
+					
 				ghost1.setPosX(ghost1.getPosX()+ ghost1.getVelX());
 				ghost1.setPosY(ghost1.getPosY()+ghost1.getVelY()); 
 				
@@ -611,6 +797,7 @@ this.map= new int[][]{{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 						rndmGhost(ghost3);
 					}
 				if(!checkCollisions(ghost4.getPosX(),ghost4.getPosY(),ghost4.getMoves())) {
+					
 					ghost4.setPosX(ghost4.getPosX()+ ghost4.getVelX());
 					ghost4.setPosY(ghost4.getPosY()+ghost4.getVelY()); 
 					
